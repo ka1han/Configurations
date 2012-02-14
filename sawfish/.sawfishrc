@@ -103,6 +103,7 @@
     "gnome-volume-control-applet"
     ;; "conky"
     ;; "/home/liutos/src/lisp/librep/shebang.jl"
+    "emacs --daemon"
     ))
 ;; ** 我的应用程序快捷键设置
 (defvar *my-apps-shortcut*
@@ -110,9 +111,10 @@
    '(("Super-a" "aMule" "amule")
      ("Super-c" "Comix" "comix")
      ("Super-d" "星际译王" "stardict")
-     ("Super-e" "emacs@liutos-laptop" "emacs")
+     ("Super-e" "emacs@liutos-laptop" "emacsclient -c")
      ("Super-f" "Vimperator" "~/building/firefox/firefox")
      ("Super-g" "Chromium" "chromium-browser")
+     ("Super-i" "GVIM" "gvim")
      ("Super-m" "系统监视器" "gnome-system-monitor")
      ("Super-n" "sancho 0.9.4-59" "~/installer/sancho-0.9.4-59-linux-gtk-java/sancho")
      ("Super-o" "图像查看器" "eog")
@@ -152,6 +154,9 @@
 ;; *** 绑定Super-F10组合键为最大化当前窗口
 (bind-keys window-keymap "Super-F10"
 	   'maximize-window-toggle)
+;; *** 绑定Super-F11组合键为全屏化当前窗口
+(bind-keys window-keymap "Super-F11"
+	   'maximize-window-fullscreen-toggle)
 ;; *** 绑定Super-b组合键为调用turn-off-screen函数
 (bind-keys window-keymap "Super-b"
 	   '(turn-off-screen))
