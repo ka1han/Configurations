@@ -99,7 +99,7 @@
 (defvar *my-startup-programs* nil)
 (setq *my-startup-programs*
   `("tint2"
-    "nm-applet"
+    ;; "nm-applet"
     "gnome-volume-control-applet"
     ;; "conky"
     ;; "/home/liutos/src/lisp/librep/shebang.jl"
