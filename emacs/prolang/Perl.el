@@ -1,0 +1,1 @@
+(setq auto-mode-alist (cons '("\\.pl" . cperl-mode) auto-mode-alist))
