@@ -2,6 +2,8 @@
 ;; 外观
 ;;; 为对话窗口添加和应用程序窗口一样的边框
 (setq decorate-transients t)
+;;; 设定新窗口以居中方式出现
+(setq place-window-mode 'centered)
 ;; 键绑定
 (defun turn-off-screen ()
   "Turn off the power of the screen."
