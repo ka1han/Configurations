@@ -202,7 +202,7 @@
 (eval-after-load "color-theme"
   '(progn
      (color-theme-initialize)
-     (color-theme-hober)))
+     (color-theme-xemacs)))
 
 ; 自己定义的功能
 ;; 绑定C-c x为将当前窗口和左上角的窗口进行互换
