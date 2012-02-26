@@ -88,7 +88,7 @@
       (mapcar #'(lambda (tuple)
 		  (let ((entry-name (nth 0 tuple))
 			(startup-command (nth 1 tuple)))
-		    (cons entry-name
+		    (list entry-name
 			  (list 'system (backgroundize startup-command)))))
 	      *my-apps-menu*))
 ;; 开机启动项
