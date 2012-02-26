@@ -1,5 +1,7 @@
 ; Emacs缺省功能
 ;; 外观
+;;; 隐藏菜单栏
+(menu-bar-mode 0)
 ;;; 隐藏滚动栏
 (scroll-bar-mode 0)
 ;;; 高亮匹配的括号
@@ -8,6 +10,7 @@
 (tool-bar-mode 0)
 
 ;; 功能
+(setq inhibit-startup-message t)
 ;;; 以父目录来区分同名缓冲区
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'forward)
@@ -40,6 +43,53 @@
 ; 第三方插件功能
 ;; 添加使用Paredit、rect-mark、showtip、sdcv、template插件所需要的路径
 (add-to-list 'load-path "~/myEmacs/")
+;; 通用文本编辑
+;;; auto-complete
+(add-to-list 'load-path "~/.emacs.d/")
+(require 'auto-complete-config)
+(add-to-list 'ac-dictionary-directories "~/.emacs.d//ac-dict")
+(ac-config-default)
+(setq-default ac-sources
+	      '(ac-source-words-in-same-mode-buffers
+		ac-source-yasnippet))
+
+;;; Paredit
+(autoload 'paredit-mode "paredit"
+  "Minor mode for pseudo-structurally editing Lisp code." t)
+(add-hook 'emacs-lisp-mode-hook (lambda () (paredit-mode +1)))
+(add-hook 'lisp-mode-hook (lambda () (paredit-mode +1)))
+(add-hook 'lisp-interaction-mode-hook (lambda () (paredit-mode +1)))
+(add-hook 'scheme-mode-hook (lambda () (paredit-mode +1)))
+
+;;; rect-mark
+(add-to-list 'load-path "~/myEmacs/")
+(autoload 'rm-set-mark "rect-mark"
+  "Set mark for rectangle." t)
+(autoload 'rm-exchange-point-and-mark "rect-mark"
+  "Exchange point and mark for rectangle." t)
+(autoload 'rm-kill-region "rect-mark"
+  "Kill a rectangular region and save it in the kill ring." t)
+(autoload 'rm-kill-ring-save "rect-mark"
+  "Copy a rectangular region to the kill ring." t)
+(autoload 'rm-mouse-drag-region "rect-mark"
+  "Drag out a rectangular region with the mouse." t)
+(define-key ctl-x-map "r\C-@" 'rm-set-mark)
+(define-key ctl-x-map [?r ?\C-\ ] 'rm-set-mark)
+(define-key ctl-x-map "r\C-x" 'rm-exchange-point-and-mark)
+(define-key ctl-x-map "r\C-w" 'rm-kill-region)
+(define-key ctl-x-map "r\M-w" 'rm-kill-ring-save)
+(define-key global-map [S-down-mouse-1] 'rm-mouse-drag-region)
+
+;;; template
+(require 'template)
+(template-initialize)
+
+;;; yasnippet
+(add-to-list 'load-path "~/building/yasnippet-0.6.1c/")
+(require 'yasnippet)
+(yas/initialize)
+(yas/load-directory "~/building/yasnippet-0.6.1c/snippets/")
+
 ;; 单语言编程
 ;;; Common Lisp - SLIME
 (add-to-list 'load-path "~/building/slime-2011-01-22/")
@@ -58,6 +108,8 @@
 (global-set-key "\C-ce" 'slime-macroexpand-1)
 ;;;; 设定HyperSpec文档的本地位置
 (setq common-lisp-hyperspec-root "/home/liutos/myEmacs/HyperSpec/")
+;;; 将.lisp文件的主模式添加到auto-complete-mode将运行的模式列表中
+(add-to-list 'ac-modes 'lisp-mode)
 
 ;;; Haskell
 (load "~/building/haskell-mode-2.8.0/haskell-site-file")
@@ -114,53 +166,6 @@
 ;;; 设定Agenda模式的扫描文件列表
 (setq org-agenda-files (list "~/org/coding.org"
 			     "~/org/lang.org"))
-
-;; 通用文本编辑
-;;; auto-complete
-(add-to-list 'load-path "~/.emacs.d/")
-(require 'auto-complete-config)
-(add-to-list 'ac-dictionary-directories "~/.emacs.d//ac-dict")
-(ac-config-default)
-(setq-default ac-sources
-	      '(ac-source-words-in-same-mode-buffers
-		ac-source-yasnippet))
-
-;;; Paredit
-(autoload 'paredit-mode "paredit"
-  "Minor mode for pseudo-structurally editing Lisp code." t)
-(add-hook 'emacs-lisp-mode-hook (lambda () (paredit-mode +1)))
-(add-hook 'lisp-mode-hook (lambda () (paredit-mode +1)))
-(add-hook 'lisp-interaction-mode-hook (lambda () (paredit-mode +1)))
-(add-hook 'scheme-mode-hook (lambda () (paredit-mode +1)))
-
-;;; rect-mark
-(add-to-list 'load-path "~/myEmacs/")
-(autoload 'rm-set-mark "rect-mark"
-  "Set mark for rectangle." t)
-(autoload 'rm-exchange-point-and-mark "rect-mark"
-  "Exchange point and mark for rectangle." t)
-(autoload 'rm-kill-region "rect-mark"
-  "Kill a rectangular region and save it in the kill ring." t)
-(autoload 'rm-kill-ring-save "rect-mark"
-  "Copy a rectangular region to the kill ring." t)
-(autoload 'rm-mouse-drag-region "rect-mark"
-  "Drag out a rectangular region with the mouse." t)
-(define-key ctl-x-map "r\C-@" 'rm-set-mark)
-(define-key ctl-x-map [?r ?\C-\ ] 'rm-set-mark)
-(define-key ctl-x-map "r\C-x" 'rm-exchange-point-and-mark)
-(define-key ctl-x-map "r\C-w" 'rm-kill-region)
-(define-key ctl-x-map "r\M-w" 'rm-kill-ring-save)
-(define-key global-map [S-down-mouse-1] 'rm-mouse-drag-region)
-
-;;; template
-(require 'template)
-(template-initialize)
-
-;;; yasnippet
-(add-to-list 'load-path "~/building/yasnippet-0.6.1c/")
-(require 'yasnippet)
-(yas/initialize)
-(yas/load-directory "~/building/yasnippet-0.6.1c/snippets/")
 
 ;; 外部环境交互
 ;;; EMMS - Emacs MultiMedia System
@@ -223,6 +228,16 @@
       (select-window top-left-window)
       (switch-to-buffer cur-buffer))))
 (global-set-key "\C-cx" 'swap-current-buffer-to-top-left)
+;; 绑定F11为切换菜单栏的显示状态
+(defvar *menu-bar-toggle-status* 0
+  "The display status of the menu bar. 0 means hidden and 1 means showed.")
+(defun menu-bar-toggle ()
+  (interactive)
+  (menu-bar-mode *menu-bar-toggle-status*)
+  (if (= 1 *menu-bar-toggle-status*)
+      (setq *menu-bar-toggle-status* 0)
+    (setq *menu-bar-toggle-status* 1)))
+(global-set-key [f11] 'menu-bar-toggle)
 ;; 绑定M-g g为临时显示行号并按行进行跳转
 (defun my-goto-line ()
   "Turn on the LINUM-MODE in the current buffer and invoke function GOTO-LINE and finally turn off LINUM-MODE."
@@ -234,3 +249,5 @@
 		      (forward-line (1- linum))))
     (linum-mode 0)))
 (global-set-key "\M-gg" 'my-goto-line)
+
+
