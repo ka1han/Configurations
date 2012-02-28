@@ -165,7 +165,8 @@
 (setq org-hide-leading-stars t)
 ;;; 设定Agenda模式的扫描文件列表
 (setq org-agenda-files (list "~/org/coding.org"
-			     "~/org/lang.org"))
+			     "~/org/lang.org"
+			     "~/src/org/gtd.org"))
 
 ;; 外部环境交互
 ;;; EMMS - Emacs MultiMedia System
@@ -229,7 +230,7 @@
       (switch-to-buffer cur-buffer))))
 (global-set-key "\C-cx" 'swap-current-buffer-to-top-left)
 ;; 绑定F11为切换菜单栏的显示状态
-(defvar *menu-bar-toggle-status* 0
+(defvar *menu-bar-toggle-status* 1
   "The display status of the menu bar. 0 means hidden and 1 means showed.")
 (defun menu-bar-toggle ()
   (interactive)
@@ -249,5 +250,3 @@
 		      (forward-line (1- linum))))
     (linum-mode 0)))
 (global-set-key "\M-gg" 'my-goto-line)
-
-
