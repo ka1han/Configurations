@@ -48,7 +48,7 @@
     ("Super-S" "Shutter" "shutter")
     ("Super-t" "liutos@liutos-laptop" "terminator")
     ("Super-v" "VirtualBox Manager" "virtualbox")
-    ("Super-w" "文件浏览器" "nautilus"))
+    ("Super-w" "文件浏览器" "nautilus --no-desktop"))
   "The list of the triplets specifying the key bindings to invoke the jump-or-exec-qualified command. Each of the triplet in this list contains the key-event, string of title and the startup command of a program.")
 ;;; 映射bind-joe-key到每一个上面所定义的列表中包含的三元组上进行函数调用
 (mapc #'(lambda (triplet)
