@@ -20,6 +20,8 @@
 (bind-keys global-keymap "Super-k" '(show-desktop-toggle))
 ;;; 绑定Super-r为调出Sawfish根菜单
 (bind-keys global-keymap "Super-r" '(popup-root-menu))
+;;; 绑定鼠标右键单击为调出Sawfish根菜单
+(bind-keys root-window-keymap "button3-click1" '(popup-root-menu))
 ;;; 绑定Super-F4为关闭窗口
 (bind-keys window-keymap "Super-F4" 'delete-window-safely)
 ;;; 绑定Super-F10为切换当前窗口的最大化状态
