@@ -1,7 +1,7 @@
 ; Emacs缺省功能
 ;; 外观
 ;;; 隐藏菜单栏
-(menu-bar-mode 0)
+;; (menu-bar-mode 0)
 ;;; 隐藏滚动栏
 (scroll-bar-mode 0)
 ;;; 高亮匹配的括号
@@ -91,7 +91,7 @@
 (yas/load-directory "~/building/yasnippet-0.6.1c/snippets/")
 
 ;; 单语言编程
-;;; Common Lisp - SLIME
+;;; Common Lisp
 (add-to-list 'load-path "~/building/slime-2011-01-22/")
 (setq slime-lisp-implementations
       '((sbcl ("/usr/bin/sbcl" "--core" "/home/liutos/sbcl.core-for-slime")
@@ -104,12 +104,16 @@
 	  (lambda ()
 	    (unless (slime-connected-p)
 	      (save-excursion (slime)))))
-;;;; 绑定C-c e为调用macroexpand-1函数展开当前宏调用
-(global-set-key "\C-ce" 'slime-macroexpand-1)
-;;;; 设定HyperSpec文档的本地位置
-(setq common-lisp-hyperspec-root "/home/liutos/myEmacs/HyperSpec/")
 ;;; 将.lisp文件的主模式添加到auto-complete-mode将运行的模式列表中
 (add-to-list 'ac-modes 'lisp-mode)
+;;;; 绑定C-c e为调用macroexpand-1函数展开当前宏调用
+(global-set-key "\C-ce" 'slime-macroexpand-1)
+;;; 在Emacs-w3m中浏览HyperSpec文档
+(setq browse-url-browser-function
+      '(("/home/liutos/myEmacs/HyperSpec/" . w3m-browse-url)
+	("." . browse-url-browser-function)))
+;;;; 设定HyperSpec文档的本地位置
+(setq common-lisp-hyperspec-root "/home/liutos/myEmacs/HyperSpec/")
 
 ;;; Haskell
 (load "~/building/haskell-mode-2.8.0/haskell-site-file")
