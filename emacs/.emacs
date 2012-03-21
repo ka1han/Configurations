@@ -96,7 +96,8 @@
 (setq slime-lisp-implementations
       '((sbcl ("/usr/bin/sbcl" "--core" "/home/liutos/sbcl.core-for-slime")
 	      :coding-system utf-8-unix)
-	(clisp ("/usr/local/bin/clisp") :coding-system utf-8-unix)))
+	(clisp ("/usr/local/bin/clisp") :coding-system utf-8-unix)
+	(ccl ("/usr/local/bin/ccl") :coding-system utf-8-unix)))
 (require 'slime-autoloads)
 (slime-setup '(slime-fancy))
 ;;;; 打开Lisp源文件时启动SLIME
