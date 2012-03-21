@@ -20,6 +20,11 @@
 (bind-keys global-keymap "Super-k" '(show-desktop-toggle))
 ;;; 绑定Super-r为调出Sawfish根菜单
 (bind-keys global-keymap "Super-r" '(popup-root-menu))
+
+(defun move-cursor-center ()
+  (warp-cursor 683 384))
+;;; 绑定Super-c为移动光标到屏幕正中间
+(bind-keys global-keymap "Super-c" '(move-cursor-center))
 ;;; 绑定鼠标右键单击为调出Sawfish根菜单
 (bind-keys root-window-keymap "button3-click1" '(popup-root-menu))
 ;;; 绑定Super-F4为关闭窗口
@@ -37,7 +42,6 @@
 ;;; 定义jump-or-exec功能所包括的键绑定
 (defvar-setq *my-joe-shortcuts*
   '(("Super-a" "aMule" "amule")
-    ("Super-c" "Comix" "comix")
     ("Super-d" "星际译王" "stardict")
     ("Super-e" "emacs@liutos-laptop" "emacs")
     ("Super-f" "Vimperator" "~/building/firefox/firefox")
@@ -49,6 +53,7 @@
     ("Super-s" "SMPlayer" "smplayer")
     ("Super-S" "Shutter" "shutter")
     ("Super-t" "liutos@liutos-laptop" "terminator")
+    ("Super-T" "Transmission" "transmission")
     ("Super-v" "VirtualBox Manager" "virtualbox")
     ("Super-w" "文件浏览器" "nautilus --no-desktop"))
   "The list of the triplets specifying the key bindings to invoke the jump-or-exec-qualified command. Each of the triplet in this list contains the key-event, string of title and the startup command of a program.")
@@ -65,18 +70,24 @@
 (defvar-setq *my-apps-menu*
   '(("_DeaDBeef" "deadbeef")
     ("_Eclipse" "~/building/eclipse/eclipse -vm /home/liutos/installer/jdk1.6.0_26/bin/java")
-    ("Evince" "evince")
+    ("_Emacs" "emacs")
+    ("_Evince" "evince")
     ("_File roller" "file-roller")
-    ("GNOME system monitor" "gnome-system-monitor")
-    ("G_Vim" "gvim")
+    ("_Foxit Reader" "FoxitReader")
+    ("_Glade" "glade")
+    ("_GNOME system monitor" "gnome-system-monitor")
+    ("_GNOME Terminal" "gnome-terminal")
+    ("_GVim" "gvim")
+    ("_NetBeans IDE" "~/building/netbeans-7.1.1/bin/netbeans")
     ("_LyX" "lyx")
     ("_MySQL-Workbench" "mysql-workbench")
     ("_Nautilus" "nautilus")
     ("磁盘实用工具(_P)" "palimpsest")
     ("_Rox" "rox")
     ("_Shutter" "shutter")
-    ("SMPlayer" "smplayer")
-    ("Terminator" "terminator"))
+    ("_SMPlayer" "smplayer")
+    ("_Terminator" "terminator")
+    ("_Transmission" "transmission"))
   "The variable stores the tuple that contains the information of entry name and the startup command for the corresponding program. This variable is used for generating the application menu.")
 
 (defun backgroundize (string)
