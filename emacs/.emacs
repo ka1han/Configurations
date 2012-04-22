@@ -91,13 +91,23 @@
 (yas/load-directory "~/building/yasnippet-0.6.1c/snippets/")
 
 ;; 单语言编程
+;;; C
+(load "~/building/cedet-1.0/common/cedet")
+(semantic-load-enable-code-helpers)
+;;;; 绑定M-n为以弹出式菜单的方式提供候选的代码补全功能
+(global-set-key "\M-n" 'semantic-ia-complete-symbol-menu)
+
+;;; Clojure
+(add-to-list 'load-path "~/opt/clojure-mode/")
+(require 'clojure-mode)
+
 ;;; Common Lisp
 (add-to-list 'load-path "~/building/slime-2011-01-22/")
 (setq slime-lisp-implementations
-      '((sbcl ("/usr/bin/sbcl" "--core" "/home/liutos/sbcl.core-for-slime")
+      '((ccl ("/usr/local/bin/ccl") :coding-system utf-8-unix)
+	(sbcl ("/usr/bin/sbcl" "--core" "/home/liutos/sbcl.core-for-slime")
 	      :coding-system utf-8-unix)
-	(clisp ("/usr/local/bin/clisp") :coding-system utf-8-unix)
-	(ccl ("/usr/local/bin/ccl") :coding-system utf-8-unix)))
+	(clisp ("/usr/local/bin/clisp") :coding-system utf-8-unix)))
 (require 'slime-autoloads)
 (slime-setup '(slime-fancy))
 ;;;; 打开Lisp源文件时启动SLIME
@@ -105,16 +115,46 @@
 	  (lambda ()
 	    (unless (slime-connected-p)
 	      (save-excursion (slime)))))
-;;; 将.lisp文件的主模式添加到auto-complete-mode将运行的模式列表中
+;;;; 将.lisp文件的主模式添加到auto-complete-mode将运行的模式列表中
 (add-to-list 'ac-modes 'lisp-mode)
 ;;;; 绑定C-c e为调用macroexpand-1函数展开当前宏调用
-(global-set-key "\C-ce" 'slime-macroexpand-1)
+(define-key lisp-mode-map "\C-ce" 'slime-macroexpand-1)
 ;;; 在Emacs-w3m中浏览HyperSpec文档
 (setq browse-url-browser-function
       '(("/home/liutos/myEmacs/HyperSpec/" . w3m-browse-url)
 	("." . browse-url-browser-function)))
 ;;;; 设定HyperSpec文档的本地位置
 (setq common-lisp-hyperspec-root "/home/liutos/myEmacs/HyperSpec/")
+;;;; 绑定C-c f为交换()和[]的默认键映射
+(defvar *exchange-status* 0
+  "The exchange status of parenthesis and bracket. 0 means unchanged and 1 means the key map has been changed.")
+(defun exchange-parenthesis-bracket ()
+  "Exchange the key map of the parenthesises and square brackets."
+  (interactive)
+  (cond ((= 0 *exchange-status*)
+	 (define-key key-translation-map [?\(] [?\[])
+	 (define-key key-translation-map [?\)] [?\]])
+	 (define-key key-translation-map [?\[] [?\(])
+	 (define-key key-translation-map [?\]] [?\)])
+	 (setq *exchange-status* 1))
+	(t
+	 (define-key key-translation-map [?\[] [?\[])
+	 (define-key key-translation-map [?\]] [?\]])
+	 (define-key key-translation-map [?\(] [?\(])
+	 (define-key key-translation-map [?\)] [?\)])
+	 (setq *exchange-status* 0))))
+(global-set-key "\C-cf" 'exchange-parenthesis-bracket)
+
+;;; Erlang
+(add-to-list 'load-path "/usr/lib/erlang/lib/tools-2.6.5/emacs/")
+(require 'erlang-start)
+(add-to-list 'auto-mode-alist '("\\.erl?$" . erlang-mode))
+(add-to-list 'auto-mode-alist '("\\.hrl?$" . erlang-mode))
+(setq erlang-root-dir "/usr/lib/erlang/")
+(add-to-list 'exec-path "/usr/lib/erlang/bin/")
+(setq erlang-man-root-dir "/usr/lib/erlang/man/")
+;;;; 将erlang-mode添加到auto-complete-mode所监听的模式列表中
+(add-to-list 'ac-modes 'erlang-mode)
 
 ;;; Haskell
 (load "~/building/haskell-mode-2.8.0/haskell-site-file")
@@ -144,15 +184,30 @@
 (setq scheme-program-name "/usr/local/bin/scheme48")
 (add-to-list 'load-path "~/building/scheme48-1.8/emacs/")
 (autoload 'run-scheme "cmuscheme48" "Run an inferior Scheme process." t)
+(add-to-list 'auto-mode-alist '("\\.scm$" . scheme-mode))
+
+;;; Smalltalk
+(setq auto-mode-alist
+      (append '(("\\.st\\'" . smalltalk-mode))
+	      auto-mode-alist))
+(autoload 'smalltalk-mode "~/building/smalltalk-3.2.4/smalltalk-mode.elc" "" t)
 
 ;; 多语言编程
 ;;; Cscope
 (add-to-list 'load-path "~/building/cscope-15.7a/contrib/xcscope/")
 (require 'xcscope)
 
+;;; Zencoding
+(add-to-list 'load-path "~/building/rooney-zencoding-fc15836/")
+(require 'zencoding-mode)
+;;;; 在书写HTML文档时自动启动zencoding-mode
+(add-hook 'html-mode-hook 'zencoding-mode)
+
 ;; 结构化文档编辑
 ;;; AUCTeX
 (load "auctex.el" nil t t)
+(load "preview-latex.el" nil t t)
+(setq TeX-parse-self t)
 
 ;;; Org
 (require 'org-install)
@@ -169,9 +224,7 @@
 ;;;; 隐藏不必要的前缀星号
 (setq org-hide-leading-stars t)
 ;;; 设定Agenda模式的扫描文件列表
-(setq org-agenda-files (list "~/org/coding.org"
-			     "~/org/lang.org"
-			     "~/src/org/gtd.org"))
+(setq org-agenda-files (list "~/src/org/gtd.org"))
 
 ;; 外部环境交互
 ;;; EMMS - Emacs MultiMedia System
@@ -213,7 +266,7 @@
 (eval-after-load "color-theme"
   '(progn
      (color-theme-initialize)
-     (color-theme-xemacs)))
+     (color-theme-hober)))
 
 ; 自己定义的功能
 ;; 绑定C-c x为将当前窗口和左上角的窗口进行互换
